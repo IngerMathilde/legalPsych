@@ -3,5 +3,5 @@
 .RData
 .Ruserdata
 ^README.nb.html
-^legalPsych.Rproj
+legalPsych.Rproj
 .DS_Store
