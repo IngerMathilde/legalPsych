@@ -74,30 +74,18 @@ Print a table for each level of confidence that includes proportion correct, dia
 CA.print(All)
 #> 
 #>   
-#>  Levels Mean confidence Incorrect Correct Total Proportion correct
-#>  0        0              3         0       3    0.0000000         
-#>  10      10              6         1       7    0.1428571         
-#>  20      20             10         7      17    0.4117647         
-#>  30      30              8        10      18    0.5555556         
-#>  40      40             13        15      28    0.5357143         
-#>  50      50             13        18      31    0.5806452         
-#>  60      60             25        24      49    0.4897959         
-#>  70      70             19        37      56    0.6607143         
-#>  80      80             12        38      50    0.7600000         
-#>  90      90             12        43      55    0.7818182         
-#>  100    100              6        36      42    0.8571429         
-#>  SE         D        
-#>  0.00000000 0.0000000
-#>  0.13226001 0.1666667
-#>  0.11936462 0.7000000
-#>  0.11712139 1.2500000
-#>  0.09424976 1.1538462
-#>  0.08862687 1.3846154
-#>  0.07141370 0.9600000
-#>  0.06326968 1.9473684
-#>  0.06039868 3.1666667
-#>  0.05569046 3.5833333
-#>  0.05399492 6.0000000
+#>  Levels Mean confidence Incorrect Correct Total Proportion correct SE         D        
+#>  0        0              3         0       3    0.0000000          0.00000000 0.0000000
+#>  10      10              6         1       7    0.1428571          0.13226001 0.1666667
+#>  20      20             10         7      17    0.4117647          0.11936462 0.7000000
+#>  30      30              8        10      18    0.5555556          0.11712139 1.2500000
+#>  40      40             13        15      28    0.5357143          0.09424976 1.1538462
+#>  50      50             13        18      31    0.5806452          0.08862687 1.3846154
+#>  60      60             25        24      49    0.4897959          0.07141370 0.9600000
+#>  70      70             19        37      56    0.6607143          0.06326968 1.9473684
+#>  80      80             12        38      50    0.7600000          0.06039868 3.1666667
+#>  90      90             12        43      55    0.7818182          0.05569046 3.5833333
+#>  100    100              6        36      42    0.8571429          0.05399492 6.0000000
 #> 
 #>  The C Statistics is: 0.014
 #>  The OU Statistics is: 0.021
@@ -138,12 +126,9 @@ Create an overview table of the C, OU and NRI statistic, with 95% CI between bra
 
 ``` r
 CA.table(Choosers) 
-#>  var           var.levels C                 OU                  
-#>  ChoiceChooser NonChooser .036 [.008, .065] -.079 [-.149, -.009]
-#>  ChoiceChooser Chooser    .017 [.000, .033]  .101 [ .036,  .166]
-#>  NRI               
-#>  .026 [-.024, .075]
-#>  .180 [ .073, .286]
+#>  var           var.levels C                 OU                   NRI               
+#>  ChoiceChooser NonChooser .036 [.008, .065] -.079 [-.149, -.009] .026 [-.024, .075]
+#>  ChoiceChooser Chooser    .017 [.000, .033]  .101 [ .036,  .166] .180 [ .073, .286]
 ```
 
 ### EXAMPLE 3: Calibration plot when disregarding lower confidence groups
@@ -165,24 +150,18 @@ Correctly calculated calibration table
 
 ``` r
 CA.table(Choosers.no.low.right)
-#>  var           var.levels C                  OU                 
-#>  ChoiceChooser NonChooser .009 [-.005, .024] -.012 [-.084, .059]
-#>  ChoiceChooser Chooser    .021 [ .000, .042]  .140 [ .066, .215]
-#>  NRI               
-#>  .021 [-.028, .070]
-#>  .098 [ .000, .195]
+#>  var           var.levels C                  OU                  NRI               
+#>  ChoiceChooser NonChooser .009 [-.005, .024] -.012 [-.084, .059] .021 [-.028, .070]
+#>  ChoiceChooser Chooser    .021 [ .000, .042]  .140 [ .066, .215] .098 [ .000, .195]
 ```
 
 Incorrectly calculated calibration table
 
 ``` r
 CA.table(Choosers.no.low.wrong)
-#>  var           var.levels C                 OU                  
-#>  ChoiceChooser NonChooser .272 [.194, .349] -.512 [-.584, -.441]
-#>  ChoiceChooser Chooser    .131 [.076, .185] -.360 [-.434, -.285]
-#>  NRI               
-#>  .021 [-.028, .070]
-#>  .098 [ .000, .195]
+#>  var           var.levels C                 OU                   NRI               
+#>  ChoiceChooser NonChooser .272 [.194, .349] -.512 [-.584, -.441] .021 [-.028, .070]
+#>  ChoiceChooser Chooser    .131 [.076, .185] -.360 [-.434, -.285] .098 [ .000, .195]
 ```
 
 ### EXAMPLE 4: Compare high vs. low metamemory raters for choosers with adjusted variable names for output
@@ -215,16 +194,11 @@ Create a calibrations statistics table
 
 ``` r
 CA.table(ch.raters)
-#>  var                           var.levels C                 
-#>  EMS Relative Face Recognition Low        .005 [-.011, .020]
-#>  EMS Relative Face Recognition High       .056 [ .007, .105]
-#>  EMS Eyewitness Ability        Low        .002 [-.009, .013]
-#>  EMS Eyewitness Ability        High       .078 [ .026, .131]
-#>  OU                  NRI               
-#>   .036 [-.064, .137] .244 [ .059, .429]
-#>   .192 [ .086, .299] .247 [-.004, .499]
-#>  -.018 [-.115, .078] .318 [ .100, .535]
-#>   .247 [ .149, .345] .328 [ .040, .615]
+#>  var                           var.levels C                  OU                  NRI               
+#>  EMS Relative Face Recognition Low        .005 [-.011, .020]  .036 [-.064, .137] .244 [ .059, .429]
+#>  EMS Relative Face Recognition High       .056 [ .007, .105]  .192 [ .086, .299] .247 [-.004, .499]
+#>  EMS Eyewitness Ability        Low        .002 [-.009, .013] -.018 [-.115, .078] .318 [ .100, .535]
+#>  EMS Eyewitness Ability        High       .078 [ .026, .131]  .247 [ .149, .345] .328 [ .040, .615]
 ```
 
 Create a 95% CI plot for the calibration statistics to make it easier to inspect overlapping CI
