@@ -1,0 +1,14 @@
+Package: legalPsych
+Type: Package
+Title: Package Created For Legal Psychology Tests
+Version: 0.1.0
+Author: Inger van Boeijen 
+Maintainer: Inger van Boeijen <inger.vb.r@gmail.com> 
+Description: Creates calibration and confidence accuracy characteristic curves (CAC) for the eyewitness domain. It also computes the C, O/U, and NRI statistics and allows comparison of those statistics through 95% confidence interval plots. 
+Depends: R (>= 3.4.3)
+License: GPL-3 + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Imports: ggplot2,
+    jtools
+RoxygenNote: 6.1.0.9000
