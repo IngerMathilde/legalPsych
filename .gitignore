@@ -2,4 +2,6 @@
 .Rhistory
 .RData
 .Ruserdata
-.README.nb.html
+^README.nb.html
+^legalPsych.Rproj
+.DS_Store
