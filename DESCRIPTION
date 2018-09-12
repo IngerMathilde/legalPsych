@@ -14,3 +14,4 @@ Imports: ggplot2,
 RoxygenNote: 6.1.0.9000
 URL: https://github.com/IngerMathilde/legalPsych
 BugReports: https://github.com/IngerMathilde/legalPsych/issues
+Suggests: testthat
