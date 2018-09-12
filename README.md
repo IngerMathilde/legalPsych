@@ -30,7 +30,7 @@ To install or update legalPsych package use the following line:
 devtools::install_github("IngerMathilde/legalPsych")
 ```
 
-**Note**: Make sure to detach the legalPsych package or restart R prior to updating.
+**Note**: Make sure to detach the legalPsych package or restart R prior to updating. This will prevent the new and old versions from clashing with each other.
 
 ### Dependencies
 

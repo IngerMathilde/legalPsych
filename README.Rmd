@@ -40,7 +40,7 @@ To install or update legalPsych package use the following line:
 ```r
 devtools::install_github("IngerMathilde/legalPsych")
 ```
-**Note**: Make sure to detach the legalPsych package or restart R prior to updating.
+**Note**: Make sure to detach the legalPsych package or restart R prior to updating. This will prevent the new and old versions from clashing with each other. 
 
 ### Dependencies
 For the legalPsych package to work, you will need to load the legalPsych, ggplot2 and jtools package.
