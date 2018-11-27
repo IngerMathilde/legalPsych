@@ -9,9 +9,9 @@ The current functions allow for the computation of C, O/U, NRI and calibration c
 
 **Note:** This is beta software. Bugs are possible, both in terms of programming errors and computation errors.
 
-Suggestions for new features to add to the function should be emailed to <inger.vb.r@gmail.com>
+Suggestions for new features to add to the function should be emailed to <inger.vb.r@gmail.com> or <renan.saraiva@port.ac.uk>
 
-Suggested Citation: Van Boeijen, I.M. (2018). legalPsych: A tool for calculating calibration statistics in eyewitness research. GitHub: <https://github.com/IngerMathilde/legalPsych>
+Suggested Citation: Van Boeijen, I.M., Saraiva, R.(2018). legalPsych: A tool for calculating calibration statistics in eyewitness research. GitHub: <https://github.com/IngerMathilde/legalPsych>
 
 Getting Started
 ---------------
@@ -237,17 +237,14 @@ CA.curves(CAC.raters, labelVarType = T, legend.position = c(1,0), ybreaks = seq(
 
 ![](man/figures/README-EX5%20CA.curves-1.png)![](man/figures/README-EX5%20CA.curves-2.png)
 
-Author
-------
+Authors
+-------
 
 Inger van Boeijen
+Renan Saraiva
 
 Licence
 -------
 
 This package is licensed under the The GNU General Public License v3.0 - see the [LICENSE](LICENSE) file for details
 
-Acknowledgments
----------------
-
-I would like to thank Renan Saraiva for his support in creating this package
