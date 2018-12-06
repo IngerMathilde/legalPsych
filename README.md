@@ -240,7 +240,7 @@ CA.curves(CAC.raters, labelVarType = T, legend.position = c(1,0), ybreaks = seq(
 Authors
 -------
 
-Inger van Boeijen
+Inger van Boeijen           
 Renan Saraiva
 
 Licence
