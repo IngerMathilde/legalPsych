@@ -19,7 +19,7 @@
 #' @param var.levels A vector to be declared if one wants to compare only specific levels of a
 #'    certain variable with each other.
 #' @param jack A logical variable. If true, a jackknife SEs will be calculated to attain 95 percent
-#'    confidence intervals for the C, OU, NRI statistics.
+#'    confidence intervals for the C, OU, NRI and ANRI statistics.
 #' @param confMin An integer, indicating the minimum value of the confidence scale used. It is only
 #'    necessary to define this variable, if the confidenceLevel variable disregards the lower
 #'    spectrum of the attainable confidence levels
@@ -431,7 +431,7 @@ plot.CAC <- function(x, y, se, type = NULL, CI = T, ylim = c(50,100), ybreaks = 
 #' Prints table for calibration statistics
 #'
 #' \code{CA.table()} takes the argument of \code{CA.rel()} and prints a table with the
-#'    C, O/U and NRI stats
+#'    C, O/U, NRI and ANRI stats
 #'
 #' @param CA.rel Object created by the CA.rel function
 #' @details For a more detailed explanation see the github page for a manual.
@@ -464,7 +464,7 @@ CA.table <- function(CA.rel){
 
   # Create table accordingly to whether a JackKnife function was used
   if(CA.rel$prop$jack){
-    table.temp <- as.data.frame(sapply(c("C", "OU", "NRI" ), function(x){
+    table.temp <- as.data.frame(sapply(c("C", "OU", "NRI","ANRI"), function(x){
       paste0(table[[x]]," [", table[[paste0(x, '.95.L')]], ", " ,
              table[[paste0(x, '.95.H')]], "]")}))
     if(single){table <- as.data.frame(t(unname(table.temp)))
@@ -480,7 +480,7 @@ CA.table <- function(CA.rel){
 #' Plot 95 percent confidence interval plots for calibration statistics
 #'
 #' \code{CA.plotCI()} takes the argument of \code{CA.rel()} and and plots the confidence
-#'    interval plots for the C, O/U, and NRI calibration statistics.
+#'    interval plots for the C, O/U, NRI and ANRI calibration statistics.
 #' @param CA.rel Object created by the CA.rel function
 #' @param ylim A list with the limitation of the y axis for each calibration statistic.
 #' @details For a more detailed explanation see the github page for a manual.
@@ -490,7 +490,7 @@ CA.table <- function(CA.rel){
 #' library(jtools)
 #' data(metamemoryCA)
 #'
-#' # Create a CI plot for the C, OU, NRI statistics for high and low metamemory raters of two
+#' # Create a CI plot for the C, OU, NRI and ANRI statistics for high and low metamemory raters of two
 #' # different components.
 #'
 #' ChMM <- CA.rel(data = metamemoryCA, confidence = "Confidence",
@@ -503,7 +503,7 @@ CA.table <- function(CA.rel){
 #' CA.plotCI(ChMM)
 #'
 #' @export CA.plotCI
-CA.plotCI <- function(CA.rel, ylim = list(C = NULL, OU = c(0), NRI = NULL)){
+CA.plotCI <- function(CA.rel, ylim = list(C = NULL, OU = c(0), NRI = NULL, ANRI = NULL)){
   if(CA.rel$prop$single){stop("Can't plot CI for only one curve")}
   if(!CA.rel$prop$jack){stop("Needs to have jack SE to plot  a CI plot")}
   table <- CA.rel$table.stats
