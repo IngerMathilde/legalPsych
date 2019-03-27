@@ -66,14 +66,14 @@ Here are some examples regarding the functionality of the functions using `data(
 Create calibration curves and calculate C, OU, and NRI for the whole dataset.
 
 ``` r
-All <- CA.rel(data = metamemoryCA, confidence = "Confidence", correct = "ChoiceCorrect", test = "CAL", 
+All <- legalPsych::CA.rel(data = metamemoryCA, confidence = "Confidence", correct = "ChoiceCorrect", test = "CAL", 
               confidenceLevels = c(0,10,20,30,40,50,60,70,80,90,100))
 ```
 
 Print a table for each level of confidence that includes proportion correct, diagnosticity, C, OU, and NRI statistic.
 
 ``` r
-CA.print(All)
+legalPsych::CA.print(All)
 #> 
 #>   
 #>  Levels Mean confidence Incorrect Correct Total Proportion correct SE         D        
@@ -97,7 +97,7 @@ CA.print(All)
 Print the calibration curve, but don't show the legend. Also change the y axis label to have breaks for every 10% of confidence
 
 ``` r
-CA.curves(All, legend.position = "none",  ybreaks = c(0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100)) 
+legalPsych::CA.curves(All, legend.position = "none",  ybreaks = c(0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100)) 
 ```
 
 <img src="man/figures/README-EX1 CA.curves-1.png" width="70%" />
@@ -111,7 +111,7 @@ In order to collapse certain confidence levels (e.g., group together the 0, 10, 
 To obtain jackknife SE for the C, OU, NRI statistic,`jack = T` is added to the `CA.rel()` function.
 
 ``` r
-Choosers <- CA.rel(data = metamemoryCA, confidence = "Confidence", correct = "ChoiceCorrect", 
+Choosers <- legalPsych::CA.rel(data = metamemoryCA, confidence = "Confidence", correct = "ChoiceCorrect", 
                    test = "CAL", var = "ChoiceChooser", 
                    confidenceLevels = list(c(0,20),c(30,40), c(50,60), c(70,80), c(90,100)), jack = T)
 ```
@@ -119,7 +119,7 @@ Choosers <- CA.rel(data = metamemoryCA, confidence = "Confidence", correct = "Ch
 Create calibration curves to compare choosers and nonchoosers for all five different confidence levels.
 
 ``` r
-CA.curves(Choosers)
+legalPsych::CA.curves(Choosers)
 ```
 
 ![](man/figures/README-EX2%20CA.curves-1.png)
@@ -127,7 +127,7 @@ CA.curves(Choosers)
 Create a table with the C, OU and NRI statistic, along with 95% CI between brackets (calculated via jackknife).
 
 ``` r
-CA.table(Choosers) 
+legalPsych::CA.table(Choosers) 
 #>  var           var.levels C                 OU                   NRI               
 #>  ChoiceChooser NonChooser .036 [.008, .065] -.079 [-.149, -.009] .026 [-.024, .075]
 #>  ChoiceChooser Chooser    .017 [.000, .033]  .101 [ .036,  .166] .180 [ .073, .286]
@@ -138,12 +138,12 @@ CA.table(Choosers)
 When lower levels of confidence are not included in the analysis, it is important to define the minimum attainable confidence level in the `ConfMin` variable to ensure that the calibration calculations are still accurate. See the difference between `Choosers.no.low.correct` and `Choosers.no.low.incorrect` calibration tables
 
 ``` r
-Choosers.no.low.correct <- CA.rel(data = metamemoryCA, confidence = "Confidence", 
+Choosers.no.low.correct <- legalPsych::CA.rel(data = metamemoryCA, confidence = "Confidence", 
                                 correct = "ChoiceCorrect", test = "CAL", var = "ChoiceChooser", 
                                 confidenceLevels = list(c(50,60), c(70,80), c(90,100)), 
                                 jack = T, confMin = 0)
 
-Choosers.no.low.incorrect <- CA.rel(data = metamemoryCA, confidence = "Confidence", 
+Choosers.no.low.incorrect <- legalPsych::CA.rel(data = metamemoryCA, confidence = "Confidence", 
                                 correct = "ChoiceCorrect", test = "CAL", var = "ChoiceChooser", 
                                 confidenceLevels = list(c(50,60), c(70,80), c(90,100)), jack = T)
 ```
@@ -151,7 +151,7 @@ Choosers.no.low.incorrect <- CA.rel(data = metamemoryCA, confidence = "Confidenc
 Correctly calculated calibration table
 
 ``` r
-CA.table(Choosers.no.low.correct)
+legalPsych::CA.table(Choosers.no.low.correct)
 #>  var           var.levels C                  OU                  NRI               
 #>  ChoiceChooser NonChooser .009 [-.005, .024] -.012 [-.084, .059] .021 [-.028, .070]
 #>  ChoiceChooser Chooser    .021 [ .000, .042]  .140 [ .066, .215] .098 [ .000, .195]
@@ -160,7 +160,7 @@ CA.table(Choosers.no.low.correct)
 Incorrectly calculated calibration table
 
 ``` r
-CA.table(Choosers.no.low.incorrect)
+legalPsych::CA.table(Choosers.no.low.incorrect)
 #>  var           var.levels C                 OU                   NRI               
 #>  ChoiceChooser NonChooser .272 [.194, .349] -.512 [-.584, -.441] .021 [-.028, .070]
 #>  ChoiceChooser Chooser    .131 [.076, .185] -.360 [-.434, -.285] .098 [ .000, .195]
@@ -177,7 +177,7 @@ data.ch <- subset(metamemoryCA, ChoiceChooser == "Chooser")
 It is often that case calibration is compared between different groups (e.g., presence of weapon vs absence of weapon, or intoxicated witnesses vs sober witnesses). To compare different groups the names of the variables need to be defined as a vector in the `var` variable. In this example we are comparing calibration for individuals with high or low scores in self-rated face recognition ability and eyewitness memory ability.The `var.level` argument makes it possible to compare high with low metamemory raters, while disregarding medium raters. To change how the variable names appear in the plots you can use the var.name argument. In this example the variable name in our dataset is `Rater.EMS.Relative.Face.Recognition`, but we want to plot it as EMS Relative Face Recognition.
 
 ``` r
-ch.raters <- CA.rel(data = data.ch, confidence = "Confidence", correct = "ChoiceCorrect", test = "CAL", 
+ch.raters <- legalPsych::CA.rel(data = data.ch, confidence = "Confidence", correct = "ChoiceCorrect", test = "CAL", 
                     var = c("Rater.EMS.Relative.Face.Recognition", "Rater.EMS.Eyewitness.Ability"), 
                     var.names = c("EMS Relative Face Recognition", "EMS Eyewitness Ability"), 
                     var.levels = c('Low', 'High'), 
@@ -187,7 +187,7 @@ ch.raters <- CA.rel(data = data.ch, confidence = "Confidence", correct = "Choice
 Create calibration plots, including the variable names in the legend
 
 ``` r
-CA.curves(ch.raters, labelVarType = T)
+legalPsych::CA.curves(ch.raters, labelVarType = T)
 ```
 
 ![](man/figures/README-EX4%20CA.curves-1.png)![](man/figures/README-EX4%20CA.curves-2.png)
@@ -195,7 +195,7 @@ CA.curves(ch.raters, labelVarType = T)
 Create a table with the calibrations statistics for each group, including 95% CI:
 
 ``` r
-CA.table(ch.raters)
+legalPsych::CA.table(ch.raters)
 #>  var                           var.levels C                  OU                  NRI               
 #>  EMS Relative Face Recognition Low        .005 [-.011, .020]  .036 [-.064, .137] .244 [ .059, .429]
 #>  EMS Relative Face Recognition High       .056 [ .007, .105]  .192 [ .086, .299] .247 [-.004, .499]
@@ -206,7 +206,7 @@ CA.table(ch.raters)
 Create a 95% CI plot for the calibration statistics to make it easier to inspect overlapping CI:
 
 ``` r
-CA.plotCI(ch.raters)
+legalPsych::CA.plotCI(ch.raters)
 ```
 
 ![](man/figures/README-EX4%20CA.plotCI-1.png)![](man/figures/README-EX4%20CA.plotCI-2.png)![](man/figures/README-EX4%20CA.plotCI-3.png)
@@ -222,7 +222,7 @@ data.CAC <- subset(metamemoryCA, ChoiceValue == "Target")
 Since we are computing CAC analysis, our `CA.rel()` function, we need to include the argument `test = "CAC"`.
 
 ``` r
-CAC.raters <- CA.rel(data = data.CAC, confidence = "Confidence", correct = "ChoiceCorrect", test = "CAC", 
+CAC.raters <- legalPsych::CA.rel(data = data.CAC, confidence = "Confidence", correct = "ChoiceCorrect", test = "CAC", 
                      var = c("Rater.EMS.Relative.Face.Recognition", "Rater.EMS.Eyewitness.Ability"), 
                      var.names = c("EMS Relative Face Recognition", "EMS Eyewitness Ability"), 
                      var.levels = c('Low', 'High'), 
@@ -232,7 +232,7 @@ CAC.raters <- CA.rel(data = data.CAC, confidence = "Confidence", correct = "Choi
 Now we can plot CAC curves that include the variable name in the legend, positioning the legend in the right bottom corner (see `legend.position` argument). The error bars in the plot are 95% confidence intervals.
 
 ``` r
-CA.curves(CAC.raters, labelVarType = T, legend.position = c(1,0), ybreaks = seq(50, 100, 10)) 
+legalPsych::CA.curves(CAC.raters, labelVarType = T, legend.position = c(1,0), ybreaks = seq(50, 100, 10)) 
 ```
 
 ![](man/figures/README-EX5%20CA.curves-1.png)![](man/figures/README-EX5%20CA.curves-2.png)
