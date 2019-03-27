@@ -114,7 +114,7 @@ CA.rel <- function(data, confidence, correct, test, confidenceLevels, var = NULL
     tab <- do.call(cbind, list(var.levels = rep(var.levels[[x]], each = length(confidenceLevels)),
                                tab)); rownames(tab) <- NULL; tab}, simplify = FALSE)}
 
-  # Create a variable with table of all the C, OU, and NRI stats to make it easier later on.
+  # Create a variable with table of all the C, OU, NRI, and ANRI stats to make it easier later on.
   table.stats <- if(single){as.data.frame(t(all[["calstats"]]))
   }else{do.call(rbind, sapply(var, function(x){
     tab <- as.data.frame(do.call(rbind, all[[x]]["calstats",]));
@@ -147,13 +147,15 @@ calibration <- function(confidence, correct, confidenceLevels, confMin, confMax,
   a.j <- caltable$`Proportion correct`
   c.j <- (caltable$`Mean confidence`-confMin)/confMax
   n.j <- caltable$Total
+  n.c <- length(c.j)
   n <- sum(caltable$Total, na.rm = TRUE)
 
-  # C O/U and NRI statistics
+  # C, O/U, NRI, and ANRI statistics
   C <- (1/n)*(sum(n.j*(c.j-a.j)^2, na.rm = TRUE))
   OU <- (1/n)*(sum(n.j*(c.j-a.j),  na.rm = TRUE))
   NRI <- ((1/n)*(sum(n.j*(a.j-a)^2, na.rm = TRUE)))/(a*(1-a))
-  calstats = c(C=C, OU = OU, NRI =NRI)
+  ANRI <- ((n*NRI)-(n.c+1))/(n-n.c+1)
+  calstats = c(C=C, OU = OU, NRI =NRI, ANRI=ANRI)
 
 
   if(!jack){
@@ -165,7 +167,7 @@ calibration <- function(confidence, correct, confidenceLevels, confMin, confMax,
                 confidenceLevels = confidenceLevels, jack = FALSE, confMin = confMin,
                 confMax = confMax)$calstats})["jack.se",]
 
-  calstats <- unlist(sapply(c("C", "OU", "NRI"), function(x){
+  calstats <- unlist(sapply(c("C", "OU", "NRI", "ANRI"), function(x){
     c(stat = calstats[[x]], SE = jack.SE[[x]], `95.L` = calstats[[x]]-(1.96*jack.SE[[x]]),
       `95.H` = calstats[[x]]+(1.96*jack.SE[[x]]))}, simplify = FALSE))
 
@@ -195,12 +197,13 @@ cal.table <- function(x, confidence, correct) {
 jackknife.cal <- function (x, theta, ...) {
   call <- match.call()
   n <- length(x)
-  u <- list(C=rep(0,n), OU = rep(0,n), NRI = rep(0,n))
+  u <- list(C=rep(0,n), OU = rep(0,n), NRI = rep(0,n),ANRI = rep(0,n))
   for (i in 1:n) {
     temp <- theta(x[-i], ...)
     u$C[i] <- temp["C"]
     u$OU[i] <- temp["OU"]
     u$NRI[i] <- temp["NRI"]
+    u$ANRI[i] <- temp["ANRI"]
   }
   thetahat <- theta(x, ...)
   results <- sapply(names(u), function(x){
@@ -255,7 +258,7 @@ print.calibration <- function(calstats, caltable, var = NULL, var.levels = NULL,
   print(caltable, na.print = "", quote = FALSE)
   calstats <- format(round(calstats, 3), nsmall = 3)
   if(test == "CAL"){
-    invisible(lapply(c("C", "OU", "NRI"), function(x){
+    invisible(lapply(c("C", "OU", "NRI","ANRI"), function(x){
       cat("\n", "The", x, "Statistics is:", calstats[[x]])
       if(CI95){cat(" ; 95 CI is:", paste0(calstats[[paste0(x, '.95.L')]], " - " ,
                                           calstats[[paste0(x, '.95.H')]]))}}))
@@ -504,7 +507,7 @@ CA.plotCI <- function(CA.rel, ylim = list(C = NULL, OU = c(0), NRI = NULL)){
   if(CA.rel$prop$single){stop("Can't plot CI for only one curve")}
   if(!CA.rel$prop$jack){stop("Needs to have jack SE to plot  a CI plot")}
   table <- CA.rel$table.stats
-  CA.plotCIs <- lapply(c("C", "OU", "NRI"), function(z){
+  CA.plotCIs <- lapply(c("C", "OU", "NRI","ANRI"), function(z){
     plot.CI(data = table, x=z, xmin=paste0(z,".95.L"),
             xmax = paste0(z,".95.H"), y="var", ylim = ylim[[z]])})
   return(CA.plotCIs)
