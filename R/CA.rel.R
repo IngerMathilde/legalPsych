@@ -56,7 +56,7 @@
 #'
 #' @export CA.rel
 
-CA.rel <- function(data, confidence, correct, test, confidenceLevels, method="none", var = NULL,
+CA.rel <- function(data, confidence, correct, test, confidenceLevels, var = NULL,
                    var.names = NULL, var.levels = NULL, jack = FALSE, confMin = NULL,
                    confMax = NULL){
   if(!test %in% c("CAL", "CAC")){stop('The test needs to be either "CAL" or "CAC"')}
@@ -92,12 +92,11 @@ CA.rel <- function(data, confidence, correct, test, confidenceLevels, method="no
 
   # Create CA.rel variables
   ## Create a properties variable which is used later on to select the appropriate functions
-
-  prop <- list(single = single, test = test, jack = jack, confidenceLevels = confidenceLevels,method=method)
+  ## later on.
+  prop <- list(single = single, test = test, jack = jack, confidenceLevels = confidenceLevels)
 
   # Create a variable all, which basically includes all the necessary information.
   all <- if(single){calibration(confidence, correct, confidenceLevels = confidenceLevels,
-                                method=method,
                                 jack = jack, confMin = confMin, confMax = confMax)
   }else{sapply(var, function(x){sapply(var.levels[[x]], function(y){
     index <- which(data[,x]==y);
@@ -129,14 +128,14 @@ CA.rel <- function(data, confidence, correct, test, confidenceLevels, method="no
 ## With this function you can attain two separate things necessary for a calibration analysis.
 ## A variable of the calibration statistics and a table indicating prop correct and other variables
 ## per level of confidence.
-calibration <- function(confidence, correct, confidenceLevels,method=method, confMin, confMax, data = NULL,
+calibration <- function(confidence, correct, confidenceLevels, confMin, confMax, data = NULL,
                         jack = TRUE){
   if(!is.null(data)){confidence <- data[[confidence]]; correct <- data[[correct]]}
   if(is.null(names(confidenceLevels))){
     names(confidenceLevels)<- unlist(lapply(confidenceLevels, function(x) paste(x, collapse="-")))}
 
   caltable <- lapply(seq_along(confidenceLevels), function(x){
-    unlist(cal.table(confidenceLevels[[x]], correct=correct, confidence=confidence,method=method))})
+    unlist(cal.table(confidenceLevels[[x]], correct=correct, confidence=confidence))})
   caltable <- as.data.frame(do.call(rbind, caltable))
   caltable <- cbind(Levels = names(confidenceLevels), caltable)
 
@@ -178,8 +177,7 @@ calibration <- function(confidence, correct, confidenceLevels,method=method, con
 
 ### Calibration helper functions.
 #### Function to create a calibration table
-cal.table <- function(x, confidence, correct,method) {
-  method <- method
+cal.table <- function(x, confidence, correct) {
   index <- which(confidence >= min(x) & confidence <= max(x))
   Conf <- confidence[index]
   Cor <- correct[index]
@@ -187,34 +185,7 @@ cal.table <- function(x, confidence, correct,method) {
   conf <- mean(Conf, na.rm = TRUE)
   n <- length(index)
   correct <- sum(Cor==1, na.rm = TRUE)
-
-  #The incorrect field can assume different values depeding on whether there was a designated
-  #suspect in the study or not. If there is no designated suspect the number of incorrect
-  #identifications is calculated by ignoring filler IDs on target-present trials and dividing filler
-  #IDs by the number of lineup members on target-absent trials.
-
-  incorrect <- if(method =="none") {sum(Cor==0, na.rm = TRUE)}
-               if(method =="designated.suspect") {sum(Cor==0, na.rm = TRUE)}
-               if(method =="non.designated.suspect") {function(lineup.size){
-
-                        incorrect.present <- data %>%
-                                            filter(TargetPresence=="Present") %>%
-                                            filter(ChoiceValue=="NotPresent") %>%
-                                            filter(ChoiceCorrect==0) %>%
-                                            nrow()
-
-                        incorrect.absent <- data %>%
-                                            filter(TargetPresence=="Absent") %>%
-                                            filter(grepl('Filler', ChoiceValue)) %>%
-                                            filter(ChoiceCorrect==0) %>%
-                                            nrow()/lineup.size
-
-                       incorrect.NDS(sum(incorrect.present,incorrect.absent))
-
-                        return(incorrect.NDS)
-                   }
-              }
-
+  incorrect <- sum(Cor==0, na.rm = TRUE)
   p <- correct/n
   se <- sqrt(p*(1 - p) / n)
   results <- list(`Mean confidence` = conf, Incorrect = incorrect, Correct = correct, Total = n,
@@ -335,7 +306,7 @@ print.calibration <- function(calstats, caltable, var = NULL, var.levels = NULL,
 
 
 CA.curves <- function(CA.rel, legend.position = c(0,1), legend.text.size = 12, labelVarType = FALSE,
-                    ylim = NULL, ybreaks = c(0, 20, 40, 60, 80, 100), xlim = NULL){
+                      ylim = NULL, ybreaks = c(0, 20, 40, 60, 80, 100), xlim = NULL){
   prop <- CA.rel$prop
   confidenceLevels <- prop$confidenceLevels
   if(is.null(ylim)){if(prop$test == "CAL"){ylim = c(0,100)}else{ylim = c(50,100)}}
