@@ -1,6 +1,5 @@
 # Pkg startup message
 .onAttach <- function(libname, pkgname) {
-  message <- c("This is beta software. Bugs are possible, both in terms of programming",
-               "errors and computation errors.")
+  message <- c("legalPsych package for calibration statistics")
   packageStartupMessage(paste(message, collapse = " "))
 }
