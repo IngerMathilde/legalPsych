@@ -369,7 +369,7 @@ plot.CAL <- function(x, y, se, type = NULL, x.confidenceLevels, CI = F,  ylim = 
   if(is.null(xlim)){xlim <- c(x.min, x.max)}
 
   # x is conf and y is propCor
-  plot.gg <- ggplot2::ggplot(data = df.plot, ggplot2::aes(x=x, y=y, group = type)) +
+  plot.gg <- ggplot2::ggplot(data = df.plot, ggplot2::aes(x=x, y=y, group = type,color=type)) +
     ggplot2::geom_abline(intercept = 0, slope = 100/x.max, color = "grey", linetype = 2) +
     ggplot2::geom_point(data = df.plot, ggplot2::aes(shape = type), size = 3, na.rm = T) +
     ggplot2::geom_line(data = df.plot, ggplot2::aes(linetype= type), size = 1, na.rm = T) +
@@ -404,7 +404,7 @@ plot.CAC <- function(x, y, se, type = NULL, CI = T, ylim = c(50,100), ybreaks = 
   if(CI){df.plot$se <- df.plot$se*1.96}
   pd <- ggplot2::position_dodge(width=0.1)
   # x is conf and y is propCor
-  plot.gg <- ggplot2::ggplot(data = df.plot, ggplot2::aes(x=x, y=y, group = type)) +
+  plot.gg <- ggplot2::ggplot(data = df.plot, ggplot2::aes(x=x, y=y, group = type,color=type)) +
     ggplot2::geom_point(data = df.plot, ggplot2::aes(shape = type), size = 3, position=pd,
                         na.rm = T) +
     ggplot2::geom_line(data = df.plot, ggplot2::aes(linetype= type), size = 1, position = pd,
