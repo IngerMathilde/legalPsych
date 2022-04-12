@@ -503,7 +503,7 @@ CA.table <- function(CA.rel){
 #' CA.plotCI(ChMM)
 #'
 #' @export CA.plotCI
-CA.plotCI <- function(CA.rel, ylim = list(C = NULL, OU = c(0), NRI = NULL, ANRI = NULL)){
+CA.plotCI <- function(CA.rel, ylim = list(C = NULL, OU = NULL, NRI = NULL, ANRI = NULL)){
   if(CA.rel$prop$single){stop("Can't plot CI for only one curve")}
   if(!CA.rel$prop$jack){stop("Needs to have jack SE to plot  a CI plot")}
   table <- CA.rel$table.stats
