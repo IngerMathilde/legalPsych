@@ -143,7 +143,7 @@ calibration <- function(confidence, correct, confidenceLevels, confMin, confMax,
   confidence.min <- min(unlist(confidenceLevels))
 
   #Variables --> see Brewer 2006
-  a <- mean(caltable$`Proportion correct`, na.rm = TRUE)
+  a <- sum(caltable$Correct, na.rm = TRUE)/sum(caltable$Total, na.rm = TRUE)
   a.j <- caltable$`Proportion correct`
   c.j <- (caltable$`Mean confidence`-confMin)/confMax
   n.j <- caltable$Total
@@ -154,7 +154,7 @@ calibration <- function(confidence, correct, confidenceLevels, confMin, confMax,
   C <- (1/n)*(sum(n.j*(c.j-a.j)^2, na.rm = TRUE))
   OU <- (1/n)*(sum(n.j*(c.j-a.j),  na.rm = TRUE))
   NRI <- ((1/n)*(sum(n.j*(a.j-a)^2, na.rm = TRUE)))/(a*(1-a))
-  ANRI <- ((n*NRI)-(n.c+1))/(n-n.c+1)
+  ANRI <- (n*NRI-n.c+1)/(n-n.c+1)
   calstats = c(C=C, OU = OU, NRI =NRI, ANRI=ANRI)
 
 
