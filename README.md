@@ -9,7 +9,7 @@ The current functions allow for the computation of C, O/U, NRI and calibration c
 
 **Note:** This is beta software. Bugs are possible, both in terms of programming errors and computation errors.
 
-Suggestions for new features to add to the function should be emailed to <inger.vb.r@gmail.com> or <renan.saraiva@port.ac.uk>
+Suggestions for new features to add to the function should be emailed to <renan.saraiva@port.ac.uk>
 
 Suggested Citation: Van Boeijen, I.M., Saraiva, R.(2018). legalPsych: A tool for calculating calibration statistics in eyewitness research. GitHub: <https://github.com/IngerMathilde/legalPsych>
 
